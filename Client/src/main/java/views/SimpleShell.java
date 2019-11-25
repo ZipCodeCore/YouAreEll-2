@@ -7,8 +7,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import controllers.IdController;
 import controllers.MessageController;
+import models.Message;
 import youareell.YouAreEll;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
@@ -20,6 +22,7 @@ public class SimpleShell {
         System.out.println(output);
     }
     public static void main(String[] args) throws java.io.IOException {
+
 
         YouAreEll webber = new YouAreEll(new MessageController(), new IdController());
         
@@ -76,6 +79,14 @@ public class SimpleShell {
                 // messages
                 if (list.contains("messages")) {
                     String results = webber.get_messages();
+                    ObjectMapper mapper = new ObjectMapper();
+
+//JSON from String to Object
+                   // List<Message> messages = new ArrayList<Message>();
+                    Message[] messages = mapper.readValue(results, Message[].class);
+                    for(Message msg : messages){
+                        System.out.println(msg.getfromid());
+                    }
                     SimpleShell.prettyPrint(results);
                     continue;
                 }
