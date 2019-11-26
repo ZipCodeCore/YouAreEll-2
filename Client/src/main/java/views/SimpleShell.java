@@ -16,9 +16,15 @@ public class SimpleShell {
 
 
     public static void prettyPrint(String output) {
-        // yep, make an effort to format things nicely, eh?
-        System.out.println(output);
+        //TODO yep, make an effort to format things nicely, eh?
+//        System.out.println(output);
+        String[] out = output.split(",");
+        for (String str : out) {
+            System.out.println(str + "\n");
+        }
     }
+
+
     public static void main(String[] args) throws java.io.IOException {
 
         YouAreEll webber = new YouAreEll(new MessageController(), new IdController());
@@ -50,7 +56,7 @@ public class SimpleShell {
 
             //loop through to see if parsing worked
             for (int i = 0; i < commands.length; i++) {
-                //System.out.println(commands[i]); //***check to see if parsing/split worked***
+                System.out.println(commands[i]); //***check to see if parsing/split worked***
                 list.add(commands[i]);
 
             }
@@ -67,8 +73,13 @@ public class SimpleShell {
                 // Specific Commands.
 
                 // ids
-                if (list.contains("ids")) {
+                if (list.get(0).equals("ids") && list.size() == 1) {
                     String results = webber.get_ids();
+                    SimpleShell.prettyPrint(results);
+                    continue;
+                }
+                else if (list.get(0).equals("ids") && list.size() == 3) {
+                    String results = webber.post_ids(list.get(1), list.get(2));
                     SimpleShell.prettyPrint(results);
                     continue;
                 }
