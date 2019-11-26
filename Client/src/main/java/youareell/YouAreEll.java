@@ -44,6 +44,19 @@ public class YouAreEll {
         String json = jsonBuilder(labels, values);
         return MakeURLCall("/ids", "POST", json);
     }
+    // updates name of given github id
+    public String put_ids(String name, String git) {
+        String[] labels = {"name", "github"};
+        String[] values = {name, git};
+        String json = jsonBuilder(labels, values);
+        return MakeURLCall("/ids", "PUT", json);
+    }
+    public String post_message() {
+        String[] labels = {};
+        String[] values = {};
+        String json = jsonBuilder(labels, values);
+        return MakeURLCall("/messages","POST", json);
+    }
 
     public String MakeURLCall(String mainurl, String method, String jpayload) {
 
@@ -57,7 +70,7 @@ public class YouAreEll {
             conn.setDoOutput(true);
 
             conn.setRequestMethod(method);
-            if (method.equalsIgnoreCase("POST")) {
+            if (method.equals("POST") || method.equals("PUT")) {
                 conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 conn.setRequestProperty("Accept", "application/json");
 
@@ -71,16 +84,14 @@ public class YouAreEll {
                     (conn.getInputStream())));
 
             String output;
-////            System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
                result.append(output);
             }
 
             conn.disconnect();
-//            result.append(new InputStreamReader(conn.getInputStream()));
 
         } catch (Exception e) {
-            System.out.println(e.getStackTrace());
+            e.printStackTrace();
         }
 //        System.out.println(result.toString());
         return result.toString();

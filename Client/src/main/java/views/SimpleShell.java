@@ -7,8 +7,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.fasterxml.jackson.core.JsonParser;
 import controllers.IdController;
 import controllers.MessageController;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import youareell.YouAreEll;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
@@ -16,12 +20,18 @@ public class SimpleShell {
 
 
     public static void prettyPrint(String output) {
-        //TODO yep, make an effort to format things nicely, eh?
-//        System.out.println(output);
-        String[] out = output.split(",");
+        output = output.substring(1, output.length()-1) + "}";
+        String[] out = output.split("},");
         for (String str : out) {
-            System.out.println(str + "\n");
+            if (str.contains("wes")) {
+                System.out.print("\nEntry====");
+                JSONObject json = new JSONObject(str + "}");
+                for (String key : json.keySet()) {
+                    System.out.print("\n\t" + key + "\t" + json.get(key));
+                }
+            }
         }
+        System.out.println("\n");
     }
 
 
@@ -79,7 +89,12 @@ public class SimpleShell {
                     continue;
                 }
                 else if (list.get(0).equals("ids") && list.size() == 3) {
-                    String results = webber.post_ids(list.get(1), list.get(2));
+                    String results;
+                    if (webber.get_ids().contains(String.format("\"github\":\"%s\"", list.get(2)))) {
+                        results = webber.put_ids(list.get(1), list.get(2));
+                    }
+                    else results = webber.post_ids(list.get(1), list.get(2));
+
                     SimpleShell.prettyPrint(results);
                     continue;
                 }
