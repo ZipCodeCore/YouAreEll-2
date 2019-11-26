@@ -5,6 +5,7 @@ import controllers.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,10 +45,11 @@ public class YouAreEll {
         String json = jsonBuilder(labels, values);
         return MakeURLCall("/ids", "POST", json);
     }
-    // updates name of given github id
-    public String put_ids(String name, String git) {
-        String[] labels = {"name", "github"};
-        String[] values = {name, git};
+
+    //TODO update name of user with given github id
+    public String put_ids(String id, String name, String git) {
+        String[] labels = {"userid", "name", "github"};
+        String[] values = {id, name, git};
         String json = jsonBuilder(labels, values);
         return MakeURLCall("/ids", "PUT", json);
     }
@@ -62,7 +64,6 @@ public class YouAreEll {
 
         StringBuilder result = new StringBuilder();
 
-
         try {
             URL url = new URL("http://zipcode.rocks:8085" + mainurl);
 
@@ -74,10 +75,11 @@ public class YouAreEll {
                 conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 conn.setRequestProperty("Accept", "application/json");
 
-                OutputStream os = conn.getOutputStream();
-                os.write(jpayload.getBytes("UTF-8"));
+                OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
+                os.write(jpayload);//.getBytes("UTF-8"));
 
                 os.flush();
+                os.close();
             }
 
             BufferedReader br = new BufferedReader(new InputStreamReader(
