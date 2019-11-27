@@ -17,6 +17,27 @@ import youareell.YouAreEll;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
 public class SimpleShell {
+    public static String buildMessage(List<String> list) {
+        StringBuilder sb = new StringBuilder();
+        Boolean inTheMix = false;
+        for (String item : list) {
+            if (item.charAt(0) == '\'') {
+                sb.append(item);
+                inTheMix = true;
+            }
+            else if (inTheMix) {
+                sb.append(" " + item);
+            }
+            else if (item.charAt(item.length()-1) == '\'') {
+                inTheMix = false;
+                sb.append(item);
+                break;
+            }
+        }
+        String out = sb.toString();
+        return out.substring(1, out.length()-1);
+    }
+
     public static String getId(String ids, String github) {
         String userId = "";
         ids = ids.substring(1, ids.length()-1) + "}";
@@ -31,6 +52,22 @@ public class SimpleShell {
         return userId;
     }
 
+    public static String filterByGithub(String input, String github) {
+        StringBuilder filtered = new StringBuilder();
+        input = input.substring(1, input.length()-1)+"}";
+        String[] out = input.split("},");
+        for (int i = 0; i < out.length; i++) {
+//            System.out.println("[PARTIAL MESSAGES] " + str);
+            JSONObject json = new JSONObject(fixJSON(out[i]));
+            if (json.get("fromid").equals(github)) {
+                filtered.append(fixJSON(out[i]));
+                if (i != out.length-1) filtered.append(",");
+            }
+        }
+
+        return filtered.toString();
+    }
+
     public static String fixJSON(String json) {
         if (json.charAt(0) != '{')
             json = '{' + json;
@@ -40,21 +77,22 @@ public class SimpleShell {
     }
 
     public static void prettyPrint(String output) {
-        output = output.substring(1, output.length()-1);              // removes [ ] wrapped around string
-        String[] out = output.split("},");                          // creates String[] where each String is a partial JSON String
-        for (String str : out) {                                            // iterates through each string in String[]
-//            if (str.contains("wes")) {                                          // filters by ids created by me
-                System.out.print("\nEntry====");                                    // separates each entry
-
+//        System.out.println("[RESULTS UNPROCESSED] " + output);
+        if (output != null && !output.equals("null")) {
+            output = output.substring(1, output.length() - 1);
+            String[] out = output.split("},");
+            for (String str : out) {
+//                if (str.equals("ul")) break; // break if null
+                System.out.print("\nEntry====");
                 String toJ = fixJSON(str);
-                System.out.println("[CHECK] " + toJ);
-                JSONObject json = new JSONObject(toJ);               // completes json string and turns it into json object
-                for (String key : json.keySet()) {                                      // iterates through each key in the JSON object
-                    System.out.print("\n\t" + key + "\t" + json.get(key));              // prints each key and value pair
+//            System.out.println("[CHECK] " + toJ);
+                JSONObject json = new JSONObject(toJ);
+                for (String key : json.keySet()) {
+                    System.out.print("\n\t" + key + "\t" + json.get(key));
                 }
-//            }
+            }
+            System.out.println("\n");
         }
-        System.out.println("\n");
     }
 
 
@@ -127,8 +165,27 @@ public class SimpleShell {
                 }
 
                 // messages
-                if (list.contains("messages")) {
+                if (list.get(0).equals("messages") && list.size() == 1) {
                     String results = webber.get_messages();
+                    SimpleShell.prettyPrint(results);
+                    continue;
+                }
+
+                else if (list.contains("messages") && list.size()==2) {
+                    String results = webber.get_messages();
+                    results = filterByGithub(results, list.get(1));
+                    SimpleShell.prettyPrint(results);
+                    continue;
+                }
+                else if (commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9 ]+'")) {
+                    String message = buildMessage(list);
+                    String results = webber.post_message_to_git(list.get(1), "", message);
+                    SimpleShell.prettyPrint(results);
+                    continue;
+                }
+                else if (commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9 ]+' to [A-Za-z0-9]+")) {
+                    String message = buildMessage(list);
+                    String results = webber.post_message_to_git(list.get(1), list.get(list.size()-1), message);
                     SimpleShell.prettyPrint(results);
                     continue;
                 }

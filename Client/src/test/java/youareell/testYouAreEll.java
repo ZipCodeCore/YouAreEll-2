@@ -11,4 +11,10 @@ public class testYouAreEll {
         String json = url.jsonBuilder(labels, values);
         System.out.println(json);
     }
+
+    @Test
+    public void testBuildMessage() {
+        YouAreEll url = new YouAreEll(null, null);
+
+    }
 }

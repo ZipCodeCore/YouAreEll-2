@@ -35,10 +35,6 @@ public class YouAreEll {
         return MakeURLCall("/ids", "GET", "");
     }
 
-    public String get_messages() {
-        return MakeURLCall("/messages", "GET", "");
-    }
-
     public String post_ids(String name, String git) {
         String[] labels = {"name", "github"};
         String[] values = {name, git};
@@ -46,18 +42,34 @@ public class YouAreEll {
         return MakeURLCall("/ids", "POST", json);
     }
 
-    //TODO update name of user with given github id
     public String put_ids(String id, String name, String git) {
         String[] labels = {"userid", "name", "github"};
         String[] values = {id, name, git};
         String json = jsonBuilder(labels, values);
         return MakeURLCall("/ids", "PUT", json);
     }
+
+    public String get_messages() {
+        return MakeURLCall("/messages", "GET", "");
+    }
+
+    public String get_messages_github(String github) {
+        String mainurl = String.format("/ids/%s/messages", github);
+        return MakeURLCall(mainurl, "GET", "");
+    }
     public String post_message() {
         String[] labels = {};
         String[] values = {};
         String json = jsonBuilder(labels, values);
         return MakeURLCall("/messages","POST", json);
+    }
+    public String post_message_to_git(String fromid, String toid, String message) {
+        String[] labels = {"sequence", "timestamp", "fromid", "toid", "message"};
+        String[] values = {"-", null, fromid, toid, message};
+        String json = jsonBuilder(labels, values);
+//        System.out.println("[JSON ALERT] "+json);
+        String mainurl = String.format("/ids/%s/messages", fromid);
+        return MakeURLCall(mainurl,"POST", json);
     }
 
     public String MakeURLCall(String mainurl, String method, String jpayload) {
@@ -68,9 +80,10 @@ public class YouAreEll {
             URL url = new URL("http://zipcode.rocks:8085" + mainurl);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
 
+            conn.setDoOutput(true);
             conn.setRequestMethod(method);
+
             if (method.equals("POST") || method.equals("PUT")) {
                 conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 conn.setRequestProperty("Accept", "application/json");
@@ -103,7 +116,9 @@ public class YouAreEll {
         StringBuilder json = new StringBuilder().append("{");
 
         for (int i = 0; i < labels.length; i++) {
-            json.append(String.format("\"%s\": \"%s\"", labels[i], values[i]));
+            if (values[i] == null) json.append(String.format("\"%s\": %s", labels[i], values[i]));
+            else json.append(String.format("\"%s\": \"%s\"", labels[i], values[i]));
+
             if (i != labels.length-1) json.append(",");
         }
         json.append("}");
