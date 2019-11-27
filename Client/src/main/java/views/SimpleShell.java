@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -77,22 +78,81 @@ public class SimpleShell {
     }
 
     public static void prettyPrint(String output) {
-//        System.out.println("[RESULTS UNPROCESSED] " + output);
         if (output != null && !output.equals("null")) {
+
             output = output.substring(1, output.length() - 1);
-            String[] out = output.split("},");
+            ArrayList<String> out = jsonSplitter(output);
+
             for (String str : out) {
-//                if (str.equals("ul")) break; // break if null
-                System.out.print("\nEntry====");
-                String toJ = fixJSON(str);
-//            System.out.println("[CHECK] " + toJ);
-                JSONObject json = new JSONObject(toJ);
-                for (String key : json.keySet()) {
-                    System.out.print("\n\t" + key + "\t" + json.get(key));
-                }
+                System.out.print("\n\n=-==-==Entry==-====--===--====--===--====--===--=--");
+//                JSONObject json = new JSONObject(str);
+//                for (String key : json.keySet()) {
+//                    String tabs = (key.length() > 7) ? "\t" : "\t\t";
+//                    System.out.print("\n\t" + key + tabs + json.get(key));
+//                }
+                System.out.println(jsonToFormattedString(str));
             }
             System.out.println("\n");
         }
+    }
+
+    public static String jsonToFormattedString(String json) {
+        StringBuilder out = new StringBuilder();
+
+        JSONObject jsonO = new JSONObject(json);
+        for (String key : jsonO.keySet()) {
+            String tabs = (key.length() > 7) ? "\t" : "\t\t";
+            out.append("\n\t" + key + tabs + jsonO.get(key));
+        }
+
+        return out.toString();
+    }
+
+    public static ArrayList<String> jsonSplitter(String json) {
+        int countL = 0;
+        int countR = 0;
+        ArrayList<String> split = new ArrayList<String>();
+        int lastI = 0;
+        for (int i = 0; i < json.length(); i++) {
+            Character chip = json.charAt(i);
+
+            if (chip.equals('{')) countL++;
+            else if (chip.equals('}')) countR++;
+
+            if (countL == countR && countL > 0 && Math.abs(lastI-i) > 1) {
+                split.add(json.substring(lastI, i+1));
+                lastI = i+2;
+                if (lastI >= json.length()-1) break;
+            }
+        }
+        return split;
+    }
+
+    public static ArrayList<Character> buildBadChars() {
+        Character[] bois = {'{','}',',',':','\"'};
+        ArrayList<Character> list = new ArrayList<Character>();
+        for (Character c : bois) {
+            list.add(c);
+        }
+        return list;
+    }
+
+    public static ArrayList<String> jsonStringParser(String json) {
+        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<Character> bois = buildBadChars();
+        int lastI = 0;
+        boolean inTheWord = false;
+
+        for (int i = 0; i < json.length(); i++) {
+            if (!bois.contains(json.charAt(i))) inTheWord = true;
+            else {
+                if (inTheWord && Math.abs(lastI-i) > 1)
+                    list.add(json.substring(lastI+1,i));
+                lastI = i;
+                inTheWord = false;
+            }
+        }
+        return list;
     }
 
 
