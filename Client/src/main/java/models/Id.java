@@ -1,17 +1,33 @@
 package models;
 
-/* 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import utils.JsonUtils;
+
+/*
  * POJO for an Id object
  */
 public class Id {
     String name;
-    String githubId;
-    String userId;
+    String githubid;
+    String userid;
     
     public Id (String name, String githubId) {
         this.name = name;
-        this.githubId = githubId;
-        this.userId = null;
+        this.githubid = githubId;
+        this.userid = null;
+    }
+    public Id (String name, String githubId, String userId) {
+        this.name = name;
+        this.githubid = githubId;
+        this.userid = userId;
+    }
+
+    public Id (Id id) {
+        this(id.getName(), id.getGithubId(), id.getUserId());
+    }
+
+    public Id (String json) {
+        this(JsonUtils.stringToId(json));
     }
 
     public String getName() {
@@ -23,19 +39,19 @@ public class Id {
     }
 
     public String getGithubId() {
-        return this.githubId;
+        return this.githubid;
     }
 
     public void setGithubId(String githubId) {
-        this.githubId = githubId;
+        this.githubid = githubId;
     }
 
     public String getUserId() {
-        return this.userId;
+        return this.userid;
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        this.userid = userId;
     }
 
 }

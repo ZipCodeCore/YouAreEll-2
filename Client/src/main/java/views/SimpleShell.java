@@ -10,12 +10,24 @@ import java.util.List;
 
 import controllers.IdController;
 import controllers.MessageController;
+import models.Id;
 import utils.ShellUtils;
 import youareell.YouAreEll;
 import utils.JsonUtils;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
 public class SimpleShell {
+    public static void coolPrintId(String in) {
+        StringBuilder sb = new StringBuilder();
+        ArrayList<String> out = JsonUtils.jsonSplitter(in);
+        for (String s : out) {
+            System.out.print("[STRING] "+s);
+            Id id = new Id(s);
+            IdTextView idv = new IdTextView(id);
+            System.out.println(idv.toString());
+        }
+
+    }
 
     public static void prettyPrint(String output) {
         StringBuilder sb = new StringBuilder();
@@ -80,7 +92,8 @@ public class SimpleShell {
                 // ids
                 if (list.contains("ids")) {
                     String results = ShellUtils.interpretIds(list, webber);
-                    prettyPrint(results);
+
+                    coolPrintId(results);
                     continue;
                 }
 

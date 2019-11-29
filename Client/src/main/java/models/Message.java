@@ -1,6 +1,8 @@
 package models;
 
-/* 
+import utils.JsonUtils;
+
+/*
  * POJO for an Message object
  */
 public class Message {
@@ -10,13 +12,26 @@ public class Message {
     String sequence;
     String timestamp;
 
-    public Message (String message, String fromId, String toId) {
+    public Message (String message, String fromId, String toId, String sequence, String timestamp) {
         this.message = message;
         this.fromId = fromId;
         this.toId = toId;
-        this.sequence = "-";
-        this.timestamp = null;
+        this.sequence = sequence;
+        this.timestamp = timestamp;
     }
+
+    public Message (String message, String fromId, String toId) {
+        this(message, fromId, toId, "-", null);
+    }
+
+    public Message(Message message) {
+        this(message.getMessage(), message.getFromId(), message.getToId(), message.getSequence(), message.getTimestamp());
+    }
+
+    public Message (String json) {
+        this(JsonUtils.stringToMessage(json));
+    }
+
 
     public String getMessage() {
         return message;

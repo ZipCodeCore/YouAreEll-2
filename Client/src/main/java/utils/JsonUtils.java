@@ -1,5 +1,8 @@
 package utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import models.Id;
+import models.Message;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -132,5 +135,26 @@ public class JsonUtils {
         }
 
         return filtered.toString();
+    }
+
+    public static Id stringToId(String json) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Id id = objectMapper.readValue(json, Id.class);
+            return id;
+//            return (new ObjectMapper()).readValue(json, Id.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Message stringToMessage(String json) {
+        try {
+            return (new ObjectMapper()).readValue(json, Message.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
