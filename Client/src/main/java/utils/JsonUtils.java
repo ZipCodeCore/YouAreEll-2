@@ -60,8 +60,8 @@ public class JsonUtils {
 
     public static String jsonToFormattedString(String json) {
         StringBuilder out = new StringBuilder();
-
         JSONObject jsonO = new JSONObject(json);
+
         for (String key : jsonO.keySet()) {
             String tabs = (key.length() > 7) ? "\t" : "\t\t";
             out.append("\n\t" + key + tabs + jsonO.get(key));

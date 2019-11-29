@@ -96,6 +96,17 @@ public class SimpleShell {
                     prettyPrint(results);
                     continue;
                 }
+
+                if (list.size() == 1 && list.get(0).equals("help")) {
+                    System.out.println("\nValid Commands\n" +
+                            "\tids -\tlist all user ids\n" +
+                            "\tids <name> <githubid> -\tPOST new user id or update existing\n" +
+                            "\tmessages -\tlist all messages on server\n" +
+                            "\tmessages <githubid> -\tview messages involving <githubid>\n" +
+                            "\tsend <fromid> <message> to <toid> -\tsend message to x from y\n" +
+                            "\tsend <fromid> <message> -\tsend message to specific user\n");
+                    continue;
+                }
                     // you need to add a bunch more.
 
                 //!! command returns the last command in history

@@ -89,7 +89,7 @@ public class YouAreEll {
                 conn.setRequestProperty("Accept", "application/json");
 
                 OutputStreamWriter os = new OutputStreamWriter(conn.getOutputStream());
-                os.write(jpayload);//.getBytes("UTF-8"));
+                os.write(jpayload);
 
                 os.flush();
                 os.close();
