@@ -1,25 +1,33 @@
 package utils;
 
+import models.Id;
 import youareell.YouAreEll;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShellUtils {
     static String results = "No results";
 
-    public static String interpretIds(List<String> list, YouAreEll webber) {
-        if (list.size() == 1)
-            results = webber.get_ids();
+    public static ArrayList<Id> interpretIds(List<String> list, YouAreEll webber) {
+        ArrayList<Id> idsList = new ArrayList<Id>();
+        if (list.size() == 1) {
+            idsList = webber.get_ids();
+        }
+//            results = webber.get_ids();
 
         else if (list.get(0).equals("ids") && list.size() == 3) {
-            String ids = webber.get_ids();
-            String userId = JsonUtils.getId(ids, list.get(2));
+            idsList = webber.get_ids();
+//            String ids = webber.get_ids();
+            String userId = JsonUtils.getId(idsList, list.get(2));
 
-            if (ids.contains(String.format("\"github\":\"%s\"", list.get(2))))
-                results = webber.put_ids(userId, list.get(1), list.get(2));
+//            if (idsList.contains(String.format("\"github\":\"%s\"", list.get(2))))
+            if (!userId.equals(""))
+                idsList.add(webber.put_ids(userId, list.get(1), list.get(2)));
             else
-                results = webber.post_ids(list.get(1), list.get(2));
+                idsList.add(webber.post_ids(list.get(1), list.get(2)));
         }
-        return results;
+        return idsList;
     }
 
     public static String interpretMessages(List<String> list, YouAreEll webber) {

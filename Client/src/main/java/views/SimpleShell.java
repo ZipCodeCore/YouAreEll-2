@@ -29,6 +29,20 @@ public class SimpleShell {
         }
     }
 
+    public static void decentPrintId(ArrayList<Id> ids) {
+        for (Id id : ids) {
+            IdTextView itv = new IdTextView(id);
+            System.out.println(itv.toString());
+        }
+    }
+
+    public static void decentPrintMsg(ArrayList<Message> msgs) {
+        for (Message msg : msgs) {
+            MessageTextView mtv = new MessageTextView(msg);
+            System.out.println(mtv.toString());
+        }
+    }
+
     public static void coolPrintMessage(String in) {
         ArrayList<String> out = JsonUtils.jsonSplitter(in);
         for (String s : out) {
@@ -100,9 +114,9 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("ids")) {
-                    String results = ShellUtils.interpretIds(list, webber);
+                    ArrayList<Id> results = ShellUtils.interpretIds(list, webber);
 
-                    coolPrintId(results);
+                    decentPrintId(results);
                     continue;
                 }
 

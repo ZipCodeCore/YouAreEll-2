@@ -1,9 +1,9 @@
 package utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Id;
 import models.Message;
 import org.json.JSONObject;
+import views.IdTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,14 +102,16 @@ public class JsonUtils {
         return out.substring(1, out.length()-1);
     }
 
-    public static String getId(String ids, String github) {
+    public static String getId(ArrayList<Id> ids, String github) {
         String userId = "";
-        ids = ids.substring(1, ids.length()-1) + "}";
-        String[] out = ids.split("},");
-        for (String str : out) {
-            JSONObject json = new JSONObject(fixJSON(str));
-            if (json.get("github").equals(github)) {
-                userId = (String) json.get("userid");
+//        ids = ids.substring(1, ids.length()-1) + "}";
+//        String[] out = ids.split("},");
+        for (Id id : ids) {
+            IdTextView idv = new IdTextView(id);
+            System.out.println("[TEST]"+idv.toString());
+//            JSONObject json = new JSONObject(fixJSON(str));
+            if (id.getGithubId().equals(github)) {
+                userId = id.getUserId();
                 break;
             }
         }
@@ -149,5 +151,19 @@ public class JsonUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String jsonBuilder(String[] labels, String[] values) {
+        StringBuilder json = new StringBuilder().append("{");
+
+        for (int i = 0; i < labels.length; i++) {
+            if (values[i] == null) json.append(String.format("\"%s\": %s", labels[i], values[i]));
+            else json.append(String.format("\"%s\": \"%s\"", labels[i], values[i]));
+
+            if (i != labels.length-1) json.append(",");
+        }
+        json.append("}");
+//        String g = "{\"name\": \"Wes\",\"github\":\"wesjones15\"}";
+        return json.toString();
     }
 }
