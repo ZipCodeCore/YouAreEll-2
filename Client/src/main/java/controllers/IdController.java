@@ -31,7 +31,6 @@ public class IdController {
         String[] values = {id.getUserId(), id.getName(), id.getGithubId()};
         String json = JsonUtils.jsonBuilder(labels, values);
         String resp = TransactionController.MakeURLCall("/ids", "PUT", json);
-        System.out.print("{PROPER DISPATCH}");
         return JsonUtils.stringToId(resp);
     }
 

@@ -10,22 +10,18 @@ public class ShellUtils {
     static String results = "No results";
 
     public static ArrayList<Id> interpretIds(List<String> list, YouAreEll webber) {
-        ArrayList<Id> idsList = new ArrayList<Id>();
-        if (list.size() == 1) {
-            idsList = webber.get_ids();
-        }
-//            results = webber.get_ids();
+        // ids GET request implicit
+        ArrayList<Id> idsList = webber.get_ids();
 
-        else if (list.get(0).equals("ids") && list.size() == 3) {
-            idsList = webber.get_ids();
-//            String ids = webber.get_ids();
+        if (list.get(0).equals("ids") && list.size() == 3) {
             String userId = JsonUtils.getId(idsList, list.get(2));
+            idsList = new ArrayList<Id>();
 
-//            if (idsList.contains(String.format("\"github\":\"%s\"", list.get(2))))
-            if (!userId.equals(""))
+            if (!userId.equals("")) {
                 idsList.add(webber.put_ids(userId, list.get(1), list.get(2)));
-            else
+            } else {
                 idsList.add(webber.post_ids(list.get(1), list.get(2)));
+            }
         }
         return idsList;
     }

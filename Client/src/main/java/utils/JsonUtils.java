@@ -104,12 +104,8 @@ public class JsonUtils {
 
     public static String getId(ArrayList<Id> ids, String github) {
         String userId = "";
-//        ids = ids.substring(1, ids.length()-1) + "}";
-//        String[] out = ids.split("},");
+
         for (Id id : ids) {
-            IdTextView idv = new IdTextView(id);
-            System.out.println("[TEST]"+idv.toString());
-//            JSONObject json = new JSONObject(fixJSON(str));
             if (id.getGithubId().equals(github)) {
                 userId = id.getUserId();
                 break;
