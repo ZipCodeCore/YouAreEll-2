@@ -8,6 +8,14 @@ import utils.JsonUtils;
 public class IdController {
     Id myId;
 
+    public void setMyId(Id myId) {
+        this.myId = myId;
+    }
+
+    public Id getMyId() {
+        return this.myId;
+    }
+
     public ArrayList<Id> getIds() {
         ArrayList<Id> ids = new ArrayList<Id>();
         String json = TransactionController.MakeURLCall("/ids", "GET", "");
@@ -33,10 +41,4 @@ public class IdController {
         String resp = TransactionController.MakeURLCall("/ids", "PUT", json);
         return JsonUtils.stringToId(resp);
     }
-
-
-//    public static Boolean hasGithub(ArrayList<Id> ids, String github) {
-//        for ()
-//    }
-
 }

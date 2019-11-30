@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import views.IdTextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JsonUtils {
@@ -117,7 +118,8 @@ public class JsonUtils {
     public static String filterByGithub(String input, String github) {
         StringBuilder filtered = new StringBuilder();
         String[] out = jsonSplitter(input).toArray(new String[0]);
-
+//        ArrayList<String> messages = jsonSplitter(input);
+//        Arrays.stream(out).filter()
         for (int i = 0; i < out.length; i++) {
             JSONObject json = new JSONObject(out[i]);
             if (json.get("fromid").equals(github)) {
@@ -128,6 +130,8 @@ public class JsonUtils {
 
         return filtered.toString();
     }
+
+
 
     public static Id stringToId(String json) {
         try {
