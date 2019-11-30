@@ -118,15 +118,9 @@ public class JsonUtils {
 
     public static String filterByGithub(String input, String github) {
         StringBuilder filtered = new StringBuilder();
-//        System.out.println("\n\n[INPUT FILTERBYGITHUB] " + input);
-//        input = input.substring(1, input.length()-1);
-//        System.out.println("\n\n[INPUT AFTER] " + input);
-
-//        String[] out = input.split("},");
         String[] out = jsonSplitter(input).toArray(new String[0]);
 
         for (int i = 0; i < out.length; i++) {
-//            System.out.println("[PARTIAL MESSAGES] " + out[i]);
             JSONObject json = new JSONObject(out[i]);
             if (json.get("fromid").equals(github)) {
                 filtered.append(out[i]);
@@ -139,22 +133,21 @@ public class JsonUtils {
 
     public static Id stringToId(String json) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Id id = objectMapper.readValue(json, Id.class);
-            return id;
-//            return (new ObjectMapper()).readValue(json, Id.class);
+            JSONObject jsonO = new JSONObject(json);
+            return new Id(jsonO.get("name").toString(), jsonO.get("github").toString(), jsonO.get("userid").toString());
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public static Message stringToMessage(String json) {
         try {
-            return (new ObjectMapper()).readValue(json, Message.class);
+            JSONObject jsonO = new JSONObject(json);
+            return new Message(jsonO.get("message").toString(), jsonO.get("fromid").toString(), jsonO.get("toid").toString(), jsonO.get("sequence").toString(), jsonO.get("timestamp").toString());
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

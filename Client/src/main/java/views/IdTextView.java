@@ -10,7 +10,7 @@ public class IdTextView {
     }
     @Override public String toString() {
         StringBuilder out = new StringBuilder();
-        out.append(String.format(
+        out.append(String.format("User:\n" +
                 "\tname:\t\t%s\n" +
                 "\tgithub:\t\t%s\n" +
                 "\tuserid:\t\t%s\n", id.getName(), id.getGithubId(), id.getUserId()));

@@ -11,6 +11,7 @@ import java.util.List;
 import controllers.IdController;
 import controllers.MessageController;
 import models.Id;
+import models.Message;
 import utils.ShellUtils;
 import youareell.YouAreEll;
 import utils.JsonUtils;
@@ -18,15 +19,23 @@ import utils.JsonUtils;
 // Simple Shell is a Console view for youareell.YouAreEll.
 public class SimpleShell {
     public static void coolPrintId(String in) {
-        StringBuilder sb = new StringBuilder();
+//        StringBuilder sb = new StringBuilder();
         ArrayList<String> out = JsonUtils.jsonSplitter(in);
         for (String s : out) {
-            System.out.print("[STRING] "+s);
+//            System.out.print("[STRING] "+s);
             Id id = new Id(s);
             IdTextView idv = new IdTextView(id);
             System.out.println(idv.toString());
         }
+    }
 
+    public static void coolPrintMessage(String in) {
+        ArrayList<String> out = JsonUtils.jsonSplitter(in);
+        for (String s : out) {
+            Message msg = new Message(s);
+            MessageTextView mtv = new MessageTextView(msg);
+            System.out.println(mtv.toString());
+        }
     }
 
     public static void prettyPrint(String output) {
@@ -100,13 +109,13 @@ public class SimpleShell {
                 // messages
                 if (list.contains("messages")) {
                     String results = ShellUtils.interpretMessages(list, webber);
-                    prettyPrint(results);
+                    coolPrintMessage(results);
                     continue;
                 }
 
                 if (list.contains("send")) {
                     String results = ShellUtils.interpretSendMessage(list, webber, commandLine);
-                    prettyPrint(results);
+                    coolPrintMessage(results);
                     continue;
                 }
 
