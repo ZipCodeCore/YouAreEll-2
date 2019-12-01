@@ -12,7 +12,7 @@ public class MessageController {
 
     private HashSet<Message> messagesSeen;
     // why a HashSet??
-
+    //TODO implement these functions and verify that they actually work
     public ArrayList<Message> getMessages() {
         ArrayList<Message> messages = new ArrayList<Message>();
         String json = TransactionController.MakeURLCall("/messages", "GET", "");
@@ -22,24 +22,32 @@ public class MessageController {
         return messages;
     }
     public ArrayList<Message> getMessagesForId(Id id) {
-//        ArrayList<Message> messages = new ArrayList<Message>();
-//        String json = TransactionController.MakeURLCall("/messages", "GET", "");
-//        ArrayList<String> jsons = JsonUtils.jsonSplitter(json);
         return (ArrayList<Message>) getMessages().stream()
                 .filter(m -> m.getFromId().equals(id.getGithubId()))
                 .collect(Collectors.<Message>toList());
-//        messages.add(JsonUtils.stringToMessage(message));
-//        return null;
     }
     public Message getMessageForSequence(String seq) {
-        return null;
+        return getMessages().stream()
+                .filter(m -> m.getSequence().equals(seq))
+                .collect(Collectors.<Message>toList()).get(0);
     }
     public ArrayList<Message> getMessagesFromFriend(Id myId, Id friendId) {
-        return null;
+        return (ArrayList<Message>) getMessages().stream()
+                .filter(m ->
+                        (m.getFromId().equals(myId.getGithubId())) &&
+                                (m.getToId().equals(friendId.getGithubId())))
+                .collect(Collectors.<Message>toList());
     }
 
-    public Message postMessage(Id myId, Id toId, Message msg) {
-        return null;
+    public Message postMessage(String fromid, String toid, String message) {
+        String[] labels = {"sequence", "timestamp", "fromid", "toid", "message"};
+        String[] values = {"-", null, fromid, toid, message};
+        String json = JsonUtils.jsonBuilder(labels, values);
+
+        String mainurl = String.format("/ids/%s/messages", fromid);
+
+        String resp = TransactionController.MakeURLCall(mainurl,"POST", json);
+        return JsonUtils.stringToMessage(resp);
     }
  
 }

@@ -1,6 +1,9 @@
 package utils;
 
+import controllers.IdController;
+import controllers.MessageController;
 import models.Id;
+import models.Message;
 import youareell.YouAreEll;
 
 import java.util.ArrayList;
@@ -8,7 +11,8 @@ import java.util.List;
 
 public class ShellUtils {
     static String results = "No results";
-
+    static IdController idCtrl = new IdController();
+    static MessageController msgCtrl = new MessageController();
     public static ArrayList<Id> interpretIds(List<String> list, YouAreEll webber) {
         // ids GET request implicit
         ArrayList<Id> idsList = webber.get_ids();
@@ -26,24 +30,35 @@ public class ShellUtils {
         return idsList;
     }
 
-    public static String interpretMessages(List<String> list, YouAreEll webber) {
-        if (list.size() == 1)
-            results = webber.get_messages();
-        else if (list.size()==2)
-            results = JsonUtils.filterByGithub(webber.get_messages(), list.get(1));
+    public static ArrayList<Message> interpretMessages(List<String> list, YouAreEll webber) {
+        ArrayList<Message> messages = webber.get_messages();
 
-        return results;
+        if (list.size() == 3 && list.get(1).equals("seq")){
+            messages = new ArrayList<>();
+            messages.add(msgCtrl.getMessageForSequence(list.get(2)));
+        } else if (list.size() == 2) {
+            Id myId = idCtrl.getIdByGit(list.get(1));
+            messages = msgCtrl.getMessagesForId(myId);
+        } else if (list.size() == 3) {
+            Id myId = idCtrl.getIdByGit(list.get(1));
+            Id friendId = idCtrl.getIdByGit(list.get(2));
+            messages = msgCtrl.getMessagesFromFriend(myId, friendId);
+        }
+
+        return messages;
     }
 
-    public static String interpretSendMessage(List<String> list, YouAreEll webber, String commandLine) {
+    public static ArrayList<Message> interpretSendMessage(List<String> list, YouAreEll webber, String commandLine) {
+        ArrayList<Message> messages = new ArrayList<>();
         String message = JsonUtils.buildMessage(list);
 
         if (commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9. ]+'"))
-            results = webber.post_message_to_git(list.get(1), "", message);
+            messages.add(msgCtrl.postMessage(list.get(1), "", message));
+//            results = webber.post_message_to_git(list.get(1), "", message);
 
         else if (commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9 ]+' to [A-Za-z0-9]+"))
-            results = webber.post_message_to_git(list.get(1), list.get(list.size()-1), message);
+            messages.add(msgCtrl.postMessage(list.get(1), list.get(list.size()-1), message));//webber.post_message_to_git(list.get(1), list.get(list.size()-1), message);
 
-        return results;
+        return messages;
     }
 }

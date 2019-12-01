@@ -114,22 +114,22 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("ids")) {
-                    ArrayList<Id> results = ShellUtils.interpretIds(list, webber);
+                    ArrayList<Id> ids = ShellUtils.interpretIds(list, webber);
 
-                    decentPrintId(results);
+                    decentPrintId(ids);
                     continue;
                 }
 
                 // messages
                 if (list.contains("messages")) {
-                    String results = ShellUtils.interpretMessages(list, webber);
-                    coolPrintMessage(results);
+                    ArrayList<Message> messages = ShellUtils.interpretMessages(list, webber);
+                    decentPrintMsg(messages);
                     continue;
                 }
 
                 if (list.contains("send")) {
-                    String results = ShellUtils.interpretSendMessage(list, webber, commandLine);
-                    coolPrintMessage(results);
+                    ArrayList<Message> messages = ShellUtils.interpretSendMessage(list, webber, commandLine);
+                    decentPrintMsg(messages);
                     continue;
                 }
 

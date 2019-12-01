@@ -3,6 +3,7 @@ package youareell;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import controllers.*;
 import models.Id;
+import models.Message;
 import utils.JsonUtils;
 
 import java.io.BufferedReader;
@@ -57,8 +58,8 @@ public class YouAreEll {
         return idCtrl.putId(id);
     }
 
-    public String get_messages() {
-        return MakeURLCall("/messages", "GET", "");
+    public ArrayList<Message> get_messages() {
+        return msgCtrl.getMessages();//MakeURLCall("/messages", "GET", "");
     }
 
     public String get_messages_github(String github) {
