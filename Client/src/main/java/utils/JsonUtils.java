@@ -62,25 +62,25 @@ public class JsonUtils {
         return split;
     }
 
-    public static String jsonToFormattedString(String json) {
-        StringBuilder out = new StringBuilder();
-        JSONObject jsonO = new JSONObject(json);
+//    public static String jsonToFormattedString(String json) {
+//        StringBuilder out = new StringBuilder();
+//        JSONObject jsonO = new JSONObject(json);
+//
+//        for (String key : jsonO.keySet()) {
+//            String tabs = (key.length() > 7) ? "\t" : "\t\t";
+//            out.append("\n\t" + key + tabs + jsonO.get(key));
+//        }
+//
+//        return out.toString();
+//    }
 
-        for (String key : jsonO.keySet()) {
-            String tabs = (key.length() > 7) ? "\t" : "\t\t";
-            out.append("\n\t" + key + tabs + jsonO.get(key));
-        }
-
-        return out.toString();
-    }
-
-    public static String fixJSON(String json) {
-        if (json.charAt(0) != '{')
-            json = '{' + json;
-        if (json.charAt(json.length()-1) != '}')
-            json = json + '}';
-        return json;
-    }
+//    public static String fixJSON(String json) {
+//        if (json.charAt(0) != '{')
+//            json = '{' + json;
+//        if (json.charAt(json.length()-1) != '}')
+//            json = json + '}';
+//        return json;
+//    }
 
     public static String buildMessage(List<String> list) {
         StringBuilder sb = new StringBuilder();
@@ -94,7 +94,7 @@ public class JsonUtils {
                 sb.append(" " + item);
             }
             else if (item.charAt(item.length()-1) == '\'') {
-                inTheMix = false;
+//                inTheMix = false;
                 sb.append(item);
                 break;
             }
@@ -115,21 +115,21 @@ public class JsonUtils {
         return userId;
     }
 
-    public static String filterByGithub(String input, String github) {
-        StringBuilder filtered = new StringBuilder();
-        String[] out = jsonSplitter(input).toArray(new String[0]);
-//        ArrayList<String> messages = jsonSplitter(input);
-//        Arrays.stream(out).filter()
-        for (int i = 0; i < out.length; i++) {
-            JSONObject json = new JSONObject(out[i]);
-            if (json.get("fromid").equals(github)) {
-                filtered.append(out[i]);
-                if (i != out.length-1) filtered.append(",");
-            }
-        }
-
-        return filtered.toString();
-    }
+//    public static String filterByGithub(String input, String github) {
+//        StringBuilder filtered = new StringBuilder();
+//        String[] out = jsonSplitter(input).toArray(new String[0]);
+////        ArrayList<String> messages = jsonSplitter(input);
+////        Arrays.stream(out).filter()
+//        for (int i = 0; i < out.length; i++) {
+//            JSONObject json = new JSONObject(out[i]);
+//            if (json.get("fromid").equals(github)) {
+//                filtered.append(out[i]);
+//                if (i != out.length-1) filtered.append(",");
+//            }
+//        }
+//
+//        return filtered.toString();
+//    }
 
 
 

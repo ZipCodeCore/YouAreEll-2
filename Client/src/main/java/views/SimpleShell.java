@@ -52,23 +52,23 @@ public class SimpleShell {
         }
     }
 
-    public static void prettyPrint(String output) {
-        StringBuilder sb = new StringBuilder();
-        if (output != null && !output.equals("null")) {
-            ArrayList<String> out = JsonUtils.jsonSplitter(output);
-
-            for (String str : out) {
-                sb.append("\n\n=-==-==Entry==-====--===--====--===--====--===--=--");
-                sb.append(JsonUtils.jsonToFormattedString(str));
-            }
-            sb.append("\n");
-        }
-        System.out.print(sb.toString());
-    }
+//    public static void prettyPrint(String output) {
+//        StringBuilder sb = new StringBuilder();
+//        if (output != null && !output.equals("null")) {
+//            ArrayList<String> out = JsonUtils.jsonSplitter(output);
+//
+//            for (String str : out) {
+//                sb.append("\n\n=-==-==Entry==-====--===--====--===--====--===--=--");
+//                sb.append(JsonUtils.jsonToFormattedString(str));
+//            }
+//            sb.append("\n");
+//        }
+//        System.out.print(sb.toString());
+//    }
 
     public static void main(String[] args) throws java.io.IOException {
 
-        YouAreEll webber = new YouAreEll(new MessageController(), new IdController());
+//        YouAreEll webber = new YouAreEll(new MessageController(), new IdController());
         
         String commandLine;
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
@@ -114,21 +114,25 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("ids")) {
-                    ArrayList<Id> ids = ShellUtils.interpretIds(list, webber);
-
+                    ArrayList<Id> ids = ShellUtils.interpretIds(list);
                     decentPrintId(ids);
+                    continue;
+                }
+
+                if (commandLine.matches("set id [A-Za-z0-9]+")) {
+                    System.out.println(String.format("Setting myId to %s", list.get(2)));
                     continue;
                 }
 
                 // messages
                 if (list.contains("messages")) {
-                    ArrayList<Message> messages = ShellUtils.interpretMessages(list, webber);
+                    ArrayList<Message> messages = ShellUtils.interpretMessages(list);
                     decentPrintMsg(messages);
                     continue;
                 }
 
                 if (list.contains("send")) {
-                    ArrayList<Message> messages = ShellUtils.interpretSendMessage(list, webber, commandLine);
+                    ArrayList<Message> messages = ShellUtils.interpretSendMessage(list, commandLine);
                     decentPrintMsg(messages);
                     continue;
                 }
