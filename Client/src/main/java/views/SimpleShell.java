@@ -12,7 +12,6 @@ import controllers.IdController;
 import controllers.MessageController;
 import models.Id;
 import models.Message;
-import utils.ShellUtils;
 import youareell.YouAreEll;
 import utils.JsonUtils;
 
@@ -68,7 +67,7 @@ public class SimpleShell {
 
     public static void main(String[] args) throws java.io.IOException {
 
-//        YouAreEll webber = new YouAreEll(new MessageController(), new IdController());
+        YouAreEll webber = new YouAreEll(new MessageController(), new IdController());
         
         String commandLine;
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
@@ -100,7 +99,7 @@ public class SimpleShell {
                 list.add(commands[i]);
 
             }
-            System.out.print(list); //***check to see if list was added correctly***
+            System.out.println(list); //***check to see if list was added correctly***
             history.addAll(list);
             try {
                 //display history of shell with index
@@ -114,25 +113,25 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("ids")) {
-                    ArrayList<Id> ids = ShellUtils.interpretIds(list);
+                    ArrayList<Id> ids = webber.interpretIds(list);
                     decentPrintId(ids);
                     continue;
                 }
 
-                if (commandLine.matches("set id [A-Za-z0-9]+")) {
-                    System.out.println(String.format("Setting myId to %s", list.get(2)));
-                    continue;
-                }
+//                if (commandLine.matches("set id [A-Za-z0-9]+")) {
+//                    System.out.println(String.format("Setting myId to %s", list.get(2)));
+//                    continue;
+//                }
 
                 // messages
                 if (list.contains("messages")) {
-                    ArrayList<Message> messages = ShellUtils.interpretMessages(list);
+                    ArrayList<Message> messages = webber.interpretMessages(list);
                     decentPrintMsg(messages);
                     continue;
                 }
 
                 if (list.contains("send")) {
-                    ArrayList<Message> messages = ShellUtils.interpretSendMessage(list, commandLine);
+                    ArrayList<Message> messages = webber.interpretSendMessage(list, commandLine);
                     decentPrintMsg(messages);
                     continue;
                 }

@@ -12,7 +12,6 @@ public class MessageController {
 
     private HashSet<Message> messagesSeen;
     // why a HashSet??
-    //TODO implement these functions and verify that they actually work
     public ArrayList<Message> getMessages() {
         ArrayList<Message> messages = new ArrayList<Message>();
         String json = TransactionController.MakeURLCall("/messages", "GET", "");

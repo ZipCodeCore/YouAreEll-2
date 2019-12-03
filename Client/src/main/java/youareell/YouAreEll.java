@@ -12,10 +12,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class YouAreEll {
 
@@ -35,50 +32,53 @@ public class YouAreEll {
         System.out.println(urlhandler.MakeURLCall("/messages", "GET", ""));
     }
 
-//    public ArrayList<Id> get_ids() {
-//        return idCtrl.getIds();
-////        return MakeURLCall("/ids", "GET", "");
-//    }
-//
-//    public Id post_ids(String name, String git) {
-////        String[] labels = {"name", "github"};
-////        String[] values = {name, git};
-////        String json = jsonBuilder(labels, values);
-//        Id id = new Id(name, git);
-//        return idCtrl.postId(id);
-////        return MakeURLCall("/ids", "POST", json);
-//    }
-//
-//    public Id put_ids(String userid, String name, String git) {
-////        String[] labels = {"userid", "name", "github"};
-////        String[] values = {id, name, git};
-////        String json = JsonUtils.jsonBuilder(labels, values);
-////        return MakeURLCall("/ids", "PUT", json);
-//        return idCtrl.putId(new Id(name, git, userid));
-//    }
-//
-//    public ArrayList<Message> get_messages() {
-//        return msgCtrl.getMessages();//MakeURLCall("/messages", "GET", "");
-//    }
-//
-//    public String get_messages_github(String github) {
-//        String mainurl = String.format("/ids/%s/messages", github);
-//        return MakeURLCall(mainurl, "GET", "");
-//    }
-//    public String post_message() {
-//        String[] labels = {};
-//        String[] values = {};
-//        String json = JsonUtils.jsonBuilder(labels, values);
-//        return TransactionController.MakeURLCall("/messages","POST", json);
-//    }
-//    public String post_message_to_git(String fromid, String toid, String message) {
-//        String[] labels = {"sequence", "timestamp", "fromid", "toid", "message"};
-//        String[] values = {"-", null, fromid, toid, message};
-//        String json = JsonUtils.jsonBuilder(labels, values);
-////        System.out.println("[JSON ALERT] "+json);
-//        String mainurl = String.format("/ids/%s/messages", fromid);
-//        return TransactionController.MakeURLCall(mainurl,"POST", json);
-//    }
+    public ArrayList<Id> interpretIds(List<String> list) {
+        ArrayList<Id> idsList = idCtrl.getIds();
+
+        if (list.get(0).equals("ids") && list.size() == 3) {
+            String userId = JsonUtils.getId(idsList, list.get(2));
+            idsList = new ArrayList<Id>();
+
+            if (!userId.equals(""))
+                idsList.add(idCtrl.putId(new Id(list.get(1), list.get(2), userId)));
+            else
+                idsList.add(idCtrl.postId(new Id(list.get(1), list.get(2))));
+        }
+        return idsList;
+    }
+
+    public ArrayList<Message> interpretMessages(List<String> list) {
+        ArrayList<Message> messages = msgCtrl.getMessages();
+
+        if (list.size() == 3 && list.get(1).equals("seq")){
+            messages = new ArrayList<>();
+            messages.add(msgCtrl.getMessageForSequence(list.get(2)));
+        }
+        else if (list.size() == 2) {
+            Id myId = idCtrl.getIdByGit(list.get(1));
+            messages = msgCtrl.getMessagesForId(myId);
+        }
+        else if (list.size() == 3) {
+            Id myId = idCtrl.getIdByGit(list.get(1));
+            Id friendId = idCtrl.getIdByGit(list.get(2));
+            messages = msgCtrl.getMessagesFromFriend(myId, friendId);
+        }
+
+        return messages;
+    }
+
+    public ArrayList<Message> interpretSendMessage(List<String> list, String commandLine) {
+        ArrayList<Message> messages = new ArrayList<>();
+        String message = JsonUtils.buildMessage(list);
+
+        if (commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9,. ]+'"))
+            messages.add(msgCtrl.postMessage(list.get(1), "", message));
+
+        else if (commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9., ]+' to [A-Za-z0-9]+"))
+            messages.add(msgCtrl.postMessage(list.get(1), list.get(list.size()-1), message));//webber.post_message_to_git(list.get(1), list.get(list.size()-1), message);
+
+        return messages;
+    }
 
     public String MakeURLCall(String mainurl, String method, String jpayload) {
         return TransactionController.MakeURLCall(mainurl, method, jpayload);

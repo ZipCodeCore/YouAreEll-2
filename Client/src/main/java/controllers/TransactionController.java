@@ -26,7 +26,7 @@ public class TransactionController {
         return response;
     }
 
-    public static HttpURLConnection handlePostPut(HttpURLConnection conn, String jpayload) {
+    public static HttpURLConnection writeJsonToConn(HttpURLConnection conn, String jpayload) {
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         conn.setRequestProperty("Accept", "application/json");
         try {
@@ -65,13 +65,12 @@ public class TransactionController {
             conn.setRequestMethod(method);
 
             if (method.equals("POST") || method.equals("PUT")) {
-                conn = handlePostPut(conn, jpayload);
+                conn = writeJsonToConn(conn, jpayload);
             }
 
             return conn;
 
         } catch(Exception e) {
-
             e.printStackTrace();
             return null;
         }
