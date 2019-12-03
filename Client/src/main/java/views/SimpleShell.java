@@ -7,25 +7,70 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import controllers.IdController;
 import controllers.MessageController;
+import models.Id;
+import models.Message;
 import youareell.YouAreEll;
+import utils.JsonUtils;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
 public class SimpleShell {
-
-
-    public static void prettyPrint(String output) {
-        // yep, make an effort to format things nicely, eh?
-        System.out.println(output);
+    public static void coolPrintId(String in) {
+//        StringBuilder sb = new StringBuilder();
+        ArrayList<String> out = JsonUtils.jsonSplitter(in);
+        for (String s : out) {
+//            System.out.print("[STRING] "+s);
+            Id id = new Id(s);
+            IdTextView idv = new IdTextView(id);
+            System.out.println(idv.toString());
+        }
     }
+
+    public static void decentPrintId(ArrayList<Id> ids) {
+        for (Id id : ids) {
+            IdTextView itv = new IdTextView(id);
+            System.out.println(itv.toString());
+        }
+    }
+
+    public static void decentPrintMsg(ArrayList<Message> msgs) {
+        for (Message msg : msgs) {
+            MessageTextView mtv = new MessageTextView(msg);
+            System.out.println(mtv.toString());
+        }
+    }
+
+    public static void coolPrintMessage(String in) {
+        ArrayList<String> out = JsonUtils.jsonSplitter(in);
+        for (String s : out) {
+            Message msg = new Message(s);
+            MessageTextView mtv = new MessageTextView(msg);
+            System.out.println(mtv.toString());
+        }
+    }
+
+//    public static void prettyPrint(String output) {
+//        StringBuilder sb = new StringBuilder();
+//        if (output != null && !output.equals("null")) {
+//            ArrayList<String> out = JsonUtils.jsonSplitter(output);
+//
+//            for (String str : out) {
+//                sb.append("\n\n=-==-==Entry==-====--===--====--===--====--===--=--");
+//                sb.append(JsonUtils.jsonToFormattedString(str));
+//            }
+//            sb.append("\n");
+//        }
+//        System.out.print(sb.toString());
+//    }
+
     public static void main(String[] args) throws java.io.IOException {
 
         YouAreEll webber = new YouAreEll(new MessageController(), new IdController());
         
         String commandLine;
-        BufferedReader console = new BufferedReader
-                (new InputStreamReader(System.in));
+        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 
         ProcessBuilder pb = new ProcessBuilder();
         List<String> history = new ArrayList<String>();
@@ -50,11 +95,11 @@ public class SimpleShell {
 
             //loop through to see if parsing worked
             for (int i = 0; i < commands.length; i++) {
-                //System.out.println(commands[i]); //***check to see if parsing/split worked***
+                System.out.println(commands[i]); //***check to see if parsing/split worked***
                 list.add(commands[i]);
 
             }
-            System.out.print(list); //***check to see if list was added correctly***
+            System.out.println(list); //***check to see if list was added correctly***
             history.addAll(list);
             try {
                 //display history of shell with index
@@ -68,18 +113,40 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("ids")) {
-                    String results = webber.get_ids();
-                    SimpleShell.prettyPrint(results);
+                    ArrayList<Id> ids = webber.interpretIds(list);
+                    decentPrintId(ids);
                     continue;
                 }
 
+//                if (commandLine.matches("set id [A-Za-z0-9]+")) {
+//                    System.out.println(String.format("Setting myId to %s", list.get(2)));
+//                    continue;
+//                }
+
                 // messages
                 if (list.contains("messages")) {
-                    String results = webber.get_messages();
-                    SimpleShell.prettyPrint(results);
+                    ArrayList<Message> messages = webber.interpretMessages(list);
+                    decentPrintMsg(messages);
                     continue;
                 }
-                // you need to add a bunch more.
+
+                if (list.contains("send")) {
+                    ArrayList<Message> messages = webber.interpretSendMessage(list, commandLine);
+                    decentPrintMsg(messages);
+                    continue;
+                }
+
+                if (list.size() == 1 && list.get(0).equals("help")) {
+                    System.out.println("\nValid Commands\n" +
+                            "\tids -\tlist all user ids\n" +
+                            "\tids <name> <githubid> -\tPOST new user id or update existing\n" +
+                            "\tmessages -\tlist all messages on server\n" +
+                            "\tmessages <githubid> -\tview messages involving <githubid>\n" +
+                            "\tsend <fromid> <message> to <toid> -\tsend message to x from y\n" +
+                            "\tsend <fromid> <message> -\tsend message to specific user\n");
+                    continue;
+                }
+                    // you need to add a bunch more.
 
                 //!! command returns the last command in history
                 if (list.get(list.size() - 1).equals("!!")) {
@@ -107,8 +174,6 @@ public class SimpleShell {
                 while ((line = br.readLine()) != null)
                     System.out.println(line);
                 br.close();
-
-
             }
 
             //catch ioexception, output appropriate message, resume waiting for input
@@ -123,10 +188,6 @@ public class SimpleShell {
              * 4. obtain the output stream
              * 5. output the contents returned by the command
              */
-
         }
-
-
     }
-
 }
