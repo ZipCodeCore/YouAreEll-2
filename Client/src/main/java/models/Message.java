@@ -10,6 +10,22 @@ public class Message {
     private String sequence;
     private String timestamp;
 
+    public Message(String message, String fromid, String toid, String sequence, String timestamp){
+        this.message = message;
+        this.fromid = fromid;
+        this.toid = toid;
+        this.sequence = sequence;
+        this.timestamp = timestamp;
+    }
+
+    public Message(String message, String fromid, String toid){
+        this(message, fromid, toid, "-", null);
+    }
+
+    public Message(Message message){
+        this(message.getMessage(), message.getfromid(), message.gettoid(), message.getSequence(), message.getTimestamp());
+    }
+
     public String getSequence() {
         return sequence;
     }
