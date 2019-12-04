@@ -18,6 +18,8 @@ public class Message {
         this.timestamp = timestamp;
     }
 
+    private Message(){}
+
     public Message(String message, String fromid, String toid){
         this(message, fromid, toid, "-", null);
     }

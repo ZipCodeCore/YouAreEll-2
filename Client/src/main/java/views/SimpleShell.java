@@ -88,18 +88,15 @@ public class SimpleShell {
 
                 // messages
                 if (list.contains("messages")) {
+                    ArrayList<Message> messages = webber.interpretMessages(list);
+                    SimpleShell.prettyPrintMsg(messages);
+                    continue;
+                }
 
-//                    String results = webber.get_messages();
-//                    ObjectMapper mapper = new ObjectMapper();
-//
-//                    //JSON from String to Object
-//                   // List<Message> messages = new ArrayList<Message>();
-//                    Message[] messages = mapper.readValue(results, Message[].class);
-//                    for(Message msg : messages){
-//                        System.out.println(msg.getfromid());
-//                    }
-//                    SimpleShell.prettyPrint(results);
-//                    continue;
+                if(list.contains("send")){
+                    ArrayList<Message> messages = webber.interpretSendMessage(list, commandLine);
+                    SimpleShell.prettyPrintMsg(messages);
+                    continue;
                 }
                 // you need to add a bunch more.
 

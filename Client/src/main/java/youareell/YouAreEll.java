@@ -4,6 +4,7 @@ package youareell;
 import com.sun.tools.corba.se.idl.toJavaPortable.Helper;
 import controllers.*;
 import models.Id;
+import models.Message;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -88,5 +89,34 @@ public class YouAreEll {
                 idsList.add(idCtrl.postId(new Id(list.get(1), list.get(2))));
         }
         return idsList;
+    }
+
+    public ArrayList<Message> interpretMessages (List<String> list){
+        ArrayList<Message> messages = msgCtrl.getMessages();
+
+        if(list.size() == 3 && list.get(1).equals("seq")){
+            messages = new ArrayList<>();
+            messages.add(msgCtrl.getMessageForSequence(list.get(2)));
+        }else if (list.size() == 2){
+            Id myId = idCtrl.getIdByGit(list.get(1));
+            messages = msgCtrl.getMessagesForId(myId);
+        }else if (list.size() == 3){
+            Id myId = idCtrl.getIdByGit(list.get(1));
+            Id friendId = idCtrl.getIdByGit(list.get(2));
+            messages = msgCtrl.getMessagesFromFriend(myId, friendId);
+        }
+        return messages;
+    }
+
+    public ArrayList<Message> interpretSendMessage(List<String> list, String commandLine){
+        ArrayList<Message> messages = new ArrayList<>();
+        String message = HelperMethods.buildMessage(list);
+
+        if(commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9,. ]+'")){
+            messages.add(msgCtrl.postMessage(list.get(1), "", message));
+        }else if (commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9,. ]+' to [A-Za-z0-9]+")){
+            messages.add(msgCtrl.postMessage(list.get(1), list.get(list.size()-1), message));
+        }
+        return messages;
     }
 }

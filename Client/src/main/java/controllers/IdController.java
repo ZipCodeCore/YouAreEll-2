@@ -2,6 +2,8 @@ package controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import models.Id;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -47,5 +49,8 @@ public class IdController {
             i.printStackTrace();
             return null;
         }
+    }
+    public Id getIdByGit(String githubid){
+        return getIds().stream().filter(id -> id.getGithub().equals(githubid)).collect(Collectors.toList()).get(0);
     }
 }
