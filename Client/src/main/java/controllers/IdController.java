@@ -17,6 +17,7 @@ public class IdController {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Id[] ids = mapper.readValue(json, Id[].class);
+            //parameter is json which takes in all url calls.
             for(int i = 0; i < ids.length; i++){
                 idsList.add(ids[i]);
             }

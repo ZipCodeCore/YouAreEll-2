@@ -18,22 +18,26 @@ public class HelperMethods {
         return userid;
     }
 
-    public static String buildMessage(List<String> list){
-        StringBuilder sb = new StringBuilder();
-        Boolean inMsg = false;
-        for(String item : list){
-            if(item.charAt(0) == '\''){
-                sb.append(item);
-                inMsg = true;
-            }else if(inMsg){
-                sb.append(" " + item);
-            }else if (item.charAt(item.length()-1) == '\''){
-                inMsg = false;
-                sb.append(item);
-                break;
-            }
-        }
-        String output = sb.toString();
-        return output.substring(1, output.length()-1);
+    public static String buildMessage(String commandLine) {
+        return commandLine.split("'")[1];
     }
+    //another way to do the build message but the above is more efficient and below just doesnt work that well
+//    public static String buildMessage(List<String> list){
+//        StringBuilder sb = new StringBuilder();
+//        Boolean inMsg = false;
+//        for(String item : list){
+//            if(item.charAt(0) == '\''){
+//                sb.append(item);
+//                inMsg = true;
+//            }else if(inMsg){
+//                sb.append(" " + item);
+//            }else if (item.charAt(item.length()-1) == '\''){
+//                inMsg = false;
+//                sb.append(item);
+//                break;
+//            }
+//        }
+//        String output = sb.toString();
+//        return output.substring(1, output.length()-1);
+//    }
 }

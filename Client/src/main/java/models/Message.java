@@ -19,6 +19,7 @@ public class Message {
     }
 
     private Message(){}
+    //looks like this isnt used but required for object mapper
 
     public Message(String message, String fromid, String toid){
         this(message, fromid, toid, "-", null);

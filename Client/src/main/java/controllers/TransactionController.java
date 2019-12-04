@@ -17,6 +17,7 @@ public class TransactionController {
             HttpURLConnection conn = initConnection(mainurl, method, jpayload);
             response = readServerResponse(conn);
             conn.disconnect();
+            //closes connection to server
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,9 +44,11 @@ public class TransactionController {
     }
 
     public static String readServerResponse(HttpURLConnection conn){
+        //takes server output and puts it into a string
         StringBuilder result = new StringBuilder();
         try{
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            //conn.getInputStream is the input but InputStreamReader reads that input
             String output;
             while ((output = br.readLine()) != null) {
                 result.append(output);

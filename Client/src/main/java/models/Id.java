@@ -9,6 +9,7 @@ public class Id {
     String userid;
 
     private Id(){}
+    //looks like this isnt used but required for object mapper
 
     public Id (String name, String githubId) {
         this.name = name;

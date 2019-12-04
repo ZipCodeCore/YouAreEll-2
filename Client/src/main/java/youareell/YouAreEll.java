@@ -108,9 +108,9 @@ public class YouAreEll {
         return messages;
     }
 
-    public ArrayList<Message> interpretSendMessage(List<String> list, String commandLine){
+    public ArrayList<Message>  interpretSendMessage(List<String> list, String commandLine){
         ArrayList<Message> messages = new ArrayList<>();
-        String message = HelperMethods.buildMessage(list);
+        String message = HelperMethods.buildMessage(commandLine);
 
         if(commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9,. ]+'")){
             messages.add(msgCtrl.postMessage(list.get(1), "", message));
