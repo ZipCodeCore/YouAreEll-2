@@ -8,6 +8,7 @@ import views.IdTextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class JsonUtils {
     public static ArrayList<Character> buildBadChars() {
@@ -82,6 +83,10 @@ public class JsonUtils {
 //        return json;
 //    }
 
+    public static String buildMessage(String commandLine) {
+        return commandLine.split("'")[1];
+    }
+
     public static String buildMessage(List<String> list) {
         StringBuilder sb = new StringBuilder();
         Boolean inTheMix = false;
@@ -94,7 +99,7 @@ public class JsonUtils {
                 sb.append(" " + item);
             }
             else if (item.charAt(item.length()-1) == '\'') {
-//                inTheMix = false;
+                inTheMix = false;
                 sb.append(item);
                 break;
             }

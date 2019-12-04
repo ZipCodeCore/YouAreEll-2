@@ -4,6 +4,7 @@ import org.junit.Test;
 import utils.JsonUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class testSimpleShell {
     @Test
@@ -26,5 +27,13 @@ public class testSimpleShell {
         for (String item : list) {
             System.out.println(item);
         }
+    }
+
+    @Test
+    public void testBuildMessage() {
+        String commandLine = "send wesjones15 'Hello there bud, abcde' to kaiiscool";
+        String a1 = JsonUtils.buildMessage(Arrays.asList(commandLine.split(" ")));
+        String a2 = JsonUtils.buildMessage(commandLine);
+        System.out.println(a1 + "\n\n" + a2);
     }
 }

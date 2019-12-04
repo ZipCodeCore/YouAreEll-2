@@ -7,7 +7,9 @@ public class MessageTextView {
     public MessageTextView(Message msgToDisplay) {
         this.message = msgToDisplay;
     }
-    @Override public String toString() {
+
+    @Override
+    public String toString() {
         StringBuilder out = new StringBuilder();
         out.append(String.format("Message:\n" +
                 "\tfromid:\t\t%s\n" +
@@ -15,7 +17,8 @@ public class MessageTextView {
                 "\tmessage:\t%s\n" +
                 "\ttimestamp:\t%s\n" +
                 "\tsequence:\t%s\n",
-                message.getFromId(), message.getToId(), message.getMessage(), message.getTimestamp(), message.getSequence()));
+                message.getFromId(), message.getToId(), message.getMessage(),
+                message.getTimestamp(), message.getSequence()));
         return out.toString();
     } 
 }

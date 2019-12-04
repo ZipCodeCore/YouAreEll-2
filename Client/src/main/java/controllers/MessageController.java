@@ -32,9 +32,7 @@ public class MessageController {
     }
     public ArrayList<Message> getMessagesFromFriend(Id myId, Id friendId) {
         return (ArrayList<Message>) getMessages().stream()
-                .filter(m ->
-                        (m.getFromId().equals(myId.getGithubId())) &&
-                                (m.getToId().equals(friendId.getGithubId())))
+                .filter(m -> friendCondition(m, myId, friendId))
                 .collect(Collectors.<Message>toList());
     }
 
@@ -47,6 +45,11 @@ public class MessageController {
 
         String resp = TransactionController.MakeURLCall(mainurl,"POST", json);
         return JsonUtils.stringToMessage(resp);
+    }
+
+    public static Boolean friendCondition(Message m, Id myId, Id friendId) {
+        return ((m.getFromId().equals(myId.getGithubId())) && (m.getToId().equals(friendId.getGithubId()))); //||
+                //((m.getFromId().equals(friendId.getGithubId())) && (m.getToId().equals(myId.getGithubId())));
     }
  
 }

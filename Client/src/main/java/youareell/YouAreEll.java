@@ -69,13 +69,13 @@ public class YouAreEll {
 
     public ArrayList<Message> interpretSendMessage(List<String> list, String commandLine) {
         ArrayList<Message> messages = new ArrayList<>();
-        String message = JsonUtils.buildMessage(list);
+        String message = JsonUtils.buildMessage(commandLine);
 
         if (commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9,. ]+'"))
             messages.add(msgCtrl.postMessage(list.get(1), "", message));
 
         else if (commandLine.matches("send [A-Za-z0-9]+ '[A-Za-z0-9., ]+' to [A-Za-z0-9]+"))
-            messages.add(msgCtrl.postMessage(list.get(1), list.get(list.size()-1), message));//webber.post_message_to_git(list.get(1), list.get(list.size()-1), message);
+            messages.add(msgCtrl.postMessage(list.get(1), list.get(list.size()-1), message));
 
         return messages;
     }

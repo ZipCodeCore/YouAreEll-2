@@ -13,20 +13,10 @@ import controllers.MessageController;
 import models.Id;
 import models.Message;
 import youareell.YouAreEll;
-import utils.JsonUtils;
+//import utils.JsonUtils;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
 public class SimpleShell {
-    public static void coolPrintId(String in) {
-//        StringBuilder sb = new StringBuilder();
-        ArrayList<String> out = JsonUtils.jsonSplitter(in);
-        for (String s : out) {
-//            System.out.print("[STRING] "+s);
-            Id id = new Id(s);
-            IdTextView idv = new IdTextView(id);
-            System.out.println(idv.toString());
-        }
-    }
 
     public static void decentPrintId(ArrayList<Id> ids) {
         for (Id id : ids) {
@@ -41,29 +31,6 @@ public class SimpleShell {
             System.out.println(mtv.toString());
         }
     }
-
-    public static void coolPrintMessage(String in) {
-        ArrayList<String> out = JsonUtils.jsonSplitter(in);
-        for (String s : out) {
-            Message msg = new Message(s);
-            MessageTextView mtv = new MessageTextView(msg);
-            System.out.println(mtv.toString());
-        }
-    }
-
-//    public static void prettyPrint(String output) {
-//        StringBuilder sb = new StringBuilder();
-//        if (output != null && !output.equals("null")) {
-//            ArrayList<String> out = JsonUtils.jsonSplitter(output);
-//
-//            for (String str : out) {
-//                sb.append("\n\n=-==-==Entry==-====--===--====--===--====--===--=--");
-//                sb.append(JsonUtils.jsonToFormattedString(str));
-//            }
-//            sb.append("\n");
-//        }
-//        System.out.print(sb.toString());
-//    }
 
     public static void main(String[] args) throws java.io.IOException {
 
@@ -117,11 +84,6 @@ public class SimpleShell {
                     decentPrintId(ids);
                     continue;
                 }
-
-//                if (commandLine.matches("set id [A-Za-z0-9]+")) {
-//                    System.out.println(String.format("Setting myId to %s", list.get(2)));
-//                    continue;
-//                }
 
                 // messages
                 if (list.contains("messages")) {
