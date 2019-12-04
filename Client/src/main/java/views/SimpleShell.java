@@ -4,20 +4,33 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import controllers.IdController;
 import controllers.MessageController;
+import models.Id;
+import models.Message;
 import youareell.YouAreEll;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
 public class SimpleShell {
 
 
-    public static void prettyPrint(String output) {
-        // yep, make an effort to format things nicely, eh?
-        System.out.println(output);
+    public static void prettyPrintId(ArrayList<Id> ids) {
+        for(Id id : ids) {
+            IdTextView itv = new IdTextView(id);
+            System.out.println(itv.toString());
+        }
+    }
+
+    public static void prettyPrintMsg(ArrayList<Message> message) {
+        for (Message msg : message) {
+            MessageTextView mtv = new MessageTextView(msg);
+            System.out.println(mtv.toString());
+        }
     }
     public static void main(String[] args) throws java.io.IOException {
 
@@ -68,15 +81,21 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("ids")) {
-                    String results = webber.get_ids();
-                    SimpleShell.prettyPrint(results);
+                    ArrayList<Id> ids = webber.interpretIds(list);
+                    SimpleShell.prettyPrintId(ids);
                     continue;
                 }
 
                 // messages
                 if (list.contains("messages")) {
-                    String results = webber.get_messages();
-                    SimpleShell.prettyPrint(results);
+                    ArrayList<Message> messages = webber.interpretMessages(list);
+                    SimpleShell.prettyPrintMsg(messages);
+                    continue;
+                }
+
+                if(list.contains("send")){
+                    ArrayList<Message> messages = webber.interpretSendMessage(list, commandLine);
+                    SimpleShell.prettyPrintMsg(messages);
                     continue;
                 }
                 // you need to add a bunch more.
