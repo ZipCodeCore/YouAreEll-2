@@ -4,14 +4,20 @@ package models;
  * POJO for an Id object
  */
 public class Id {
-    private String uid = "";
+    private String userid = "";
     private String name = "";
     private String github = "";
 
-    public Id (String name, String githubId) {}
+    public Id() {}
 
-    public String getUid() {
-        return uid;
+    public Id(String uid, String name, String github) {
+        this.userid = uid;
+        this.name = name;
+        this.github = github;
+    }
+
+    public String getUserid() {
+        return userid;
     }
 
 //    public void setUid(String uid) {

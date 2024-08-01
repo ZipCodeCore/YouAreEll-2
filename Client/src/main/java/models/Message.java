@@ -13,33 +13,46 @@ package models;
 
 *
  */
-public class Message implements Comparable {
-
+public class Message implements Comparable<Message> {
+    // sample from server
+    // {"sequence":"ea9ccec875bbbbdcca464eb59718ae7cba9def95","timestamp":"2023-08-06T18:45:21.083445025Z",
+    // "fromid":"xt0fer","toid":"torvalds","message":"Can you hear me now?!"}
     private String message = "";
-    private String toId = "";
-    private String fromId = "";
+    private String toid = "";
+    private String fromid = "";
     private String timestamp = "";
-    private String seqId = "";
+    private String sequence = "";
 
+    public Message() {
+    }
+    public Message (String message, String fromId, String toId, String timestamp, String sequence) {
+        this.message = message;
+        this.fromid = fromId;
+        this.toid = toId;
+        this.timestamp = timestamp;
+        this.sequence = sequence;
+    }
+    
     public Message (String message, String fromId, String toId) {
         this.message = message;
-        this.fromId = fromId;
-        this.toId = toId;
+        this.fromid = fromId;
+        this.toid = toId;
     }
 
     public Message (String message, String fromId) {
         this.message = message;
-        this.fromId = fromId;
-        this.toId = "";
+        this.fromid = fromId;
+        this.toid = "";
     }
 
     @Override
     public String toString() {
-        return "to: " + this.toId + "\nfrom: "+ this.fromId + "\n" + this.message + "\n----\n";
+        return "to: " + this.toid + "\nfrom: "+ this.fromid + "\n" + this.message + "\n----\n";
     }
 
-    public int compareTo(Object o) {
-        return this.seqId.compareTo(((Message) o).getSeqId());
+    @Override
+    public int compareTo(Message o) {
+        return this.sequence.compareTo(((Message) o).getSequence());
     }
 
     public String getMessage() {
@@ -50,27 +63,27 @@ public class Message implements Comparable {
         this.message = message;
     }
 
-    public String getToId() {
-        return toId;
+    public String getToid() {
+        return toid;
     }
 
-    public void setToId(String toId) {
-        this.toId = toId;
+    public void setToid(String toId) {
+        this.toid = toId;
     }
 
-    public String getFromId() {
-        return fromId;
+    public String getFromid() {
+        return fromid;
     }
 
-    public void setFromId(String fromId) {
-        this.fromId = fromId;
+    public void setFromid(String fromId) {
+        this.fromid = fromId;
     }
 
     public String getTimestamp() {
         return timestamp;
     }
 
-    public String getSeqId() {
-        return seqId;
+    public String getSequence() {
+        return sequence;
     }
 }

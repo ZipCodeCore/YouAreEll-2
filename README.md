@@ -4,11 +4,24 @@
 
 You'll write a Client to exchange JSON data over HTTP with a Server, in this case, the UnderARock(TM) server. Get POSTMAN, the app, you need it. https://www.getpostman.com/
 
+(or if you are like me, you can use the Milkman.app, which is a little more lightweight and less intrusive)
+Get it at `brew install --cask milkman`
+
+You really __really__ need to understand the HTTP protocol and the REST API. 
+And you need to understand JSON.
+And youneed to use Milkman or Postman to test your API calls, otherwise, you're just guessing. 
+And the POST methods are the hardest to get right. 
+They are kinda tricky about what you put in the body of the POST request.
+
 a little article on [ModelViewController](https://www.geeksforgeeks.org/mvc-design-pattern/)
+
+#### Breaking News in 2024
+
+Kris has made this project more interesting. He's added working code for both the __ids__ command and the __messages__ command. Use the patterns of the way this is done to implement the other commands (below). You will want to start the URLShell class to see how it all works.
 
 ### The Point
 
-* You are to write a command interpreter using the provided `SimpleShell` class.
+* You are to write a command interpreter using the provided `URLShell` class.
 * You're going to create a way
 	* for commands to be typed into your shell,
 	* to read the typed commands and arguments,
@@ -170,7 +183,7 @@ and send it as the body of a POST request to  `http://zipcode.rocks:8085/ids/xt0
 
 ## Part Two
 
-What's that ProcessBuilder stuff about? In the SimpleShell class, take a look. How can that be used
+What's that ProcessBuilder stuff about? In the URLShell class, take a look. How can that be used
 as a pattern to use threads to make the API calls and wait for the response? Maybe launch a new thread on every request?
 
 ## Part Three
