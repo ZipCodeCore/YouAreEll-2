@@ -33,6 +33,11 @@ Ah, this might help
 >   What are the rules for GitHub user names?
 >	Github username may only contain alphanumeric characters or hyphens. Github username cannot have multiple consecutive hyphens. Github username cannot begin or end with a hyphen. Maximum is 39 characters.
 
+- stub out commands
+- do the ServerController calls.
+- do the IdC and MsgC calls.
+
+
 ### The Point
 
 * You are to write a command interpreter using the provided `URLShell` class.
@@ -139,10 +144,10 @@ in the shell
 
 the Messages API is:
 
-#### URL: /messages/
+#### URL: /messages
 * `GET` : Get last 20 msgs - returns an JSON array of message objects
 
-#### URL: /ids/:mygithubid/messages/
+#### URL: /ids/:mygithubid/messages
 * `GET` : Get last 20 msgs for myid  - returns an JSON array of message objects
 * `POST` : Create a new message in timeline - need to POST a new message object, and will get back one with a message sequence number and timestamp of the server inserted.
 

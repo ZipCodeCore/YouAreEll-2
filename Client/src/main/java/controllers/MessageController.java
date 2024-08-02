@@ -16,13 +16,18 @@ public class MessageController {
 
     private HashSet<Message> messagesSeen;
     // why a HashSet??
+    String messageTempl = "{\n" +
+            "  \"fromid\": \"%s\",\n" +
+            "  \"toid\": \"%s\",\n" +
+            "  \"message\": \"%s\"\n" +
+            "}";
 
     public MessageController(ServerController shared) {
         sc = shared;
         messagesSeen = new HashSet<Message>();
     }
     public ArrayList<Message> getMessages() {
-       String jsonInput = sc.getMessages();
+       String jsonInput = sc.sendRequest("/messages", "GET", "");
         // convert json to array of Ids
         ObjectMapper mapper = new ObjectMapper();
         List<Message> msgs;
@@ -49,8 +54,13 @@ public class MessageController {
         return null;
     }
 
-    public Message postMessage(Id myId, Id toId, Message msg) {
-        return null;
+    public String postMessage(Message msg) {
+        String rsc = String.format("/ids/%s/messages", msg.getFromId());
+        String jsonbody = String.format(messageTempl, msg.getFromId(), msg.getToId(), msg.getMessage());
+        String result = sc.sendRequest(rsc, "POST", jsonbody);
+
+        String ok = "Message sent.";
+        return result;
     }
  
 }

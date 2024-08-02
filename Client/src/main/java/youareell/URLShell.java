@@ -15,7 +15,7 @@ import controllers.TransactionController;
 // URLShell is a Console view for youareell.YouAreEll.
 public class URLShell {
 
-    String currentUser = "johnny-mnemonic";
+    String currentUser = "xt0fer";//"johnny-mnemonic";
 
     public static void prettyPrint(String output) {
         // yep, make an effort to format things nicely, eh?
@@ -116,7 +116,7 @@ public class URLShell {
                         sb.append(list.get(i));
                         sb.append(" ");
                     }    
-                    String results = urll.sendToAll(sb.toString());
+                    String results = urll.sendToAll(currentUser, sb.toString());
                     URLShell.prettyPrint(results);
                     continue;
                 }
@@ -130,10 +130,10 @@ public class URLShell {
                             sb.append(list.get(i));
                             sb.append(" ");
                         }    
-                        String results = urll.sendTo(toUser, sb.toString());
+                        String results = urll.sendTo(currentUser, toUser, sb.toString());
                         URLShell.prettyPrint(results);
                         continue;
-                        continue;
+                    }
                 }
 
                 //
@@ -152,6 +152,14 @@ public class URLShell {
                     pb.command(list);
                 }
 
+                // catch unknown commands
+                if (list.get(0) != "ids" || list.get(0) != "messages" 
+                || list.get(0) != "zweetme" || list.get(0) != "zwet" 
+                || list.get(0) != "zwend" || list.get(0) != "zweet") {
+                    System.out.println("Unknown command, please try again!");
+                }
+
+                
                 // // wait, wait, what curiousness is this?
                 // Process process = pb.start();
 

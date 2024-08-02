@@ -63,6 +63,13 @@ public class Message implements Comparable<Message> {
         this.message = message;
     }
 
+    public String getToId() {
+        return toid;
+    }
+
+    public void setToId(String toId) {
+        this.toid = toId;
+    }
     public String getToid() {
         return toid;
     }
@@ -71,6 +78,13 @@ public class Message implements Comparable<Message> {
         this.toid = toId;
     }
 
+    public String getFromId() {
+        return fromid;
+    }
+
+    public void setFromId(String fromId) {
+        this.fromid = fromId;
+    }
     public String getFromid() {
         return fromid;
     }

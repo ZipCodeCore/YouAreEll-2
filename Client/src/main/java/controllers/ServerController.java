@@ -72,21 +72,12 @@ public class ServerController {
             return "";
         }
     }
-    
-    public String getMessages() {
-        return sendRequest("/messages", "GET", "");
-    }
-    
-    public String getIds() {
-        return sendRequest("/ids", "GET", "");
-    }
-
-    public static void main(String[] args) {
+     public static void main(String[] args) {
         ServerController me = ServerController.shared();
         System.out.println("Ids ************");
-        System.out.println(me.getIds());
-        // System.out.println("Messages ************");
-        // System.out.println(me.getMessages());
+        System.out.println(me.sendRequest("/ids", "GET", ""));
+        System.out.println("Messages ************");
+        System.out.println(me.sendRequest("/messages", "GET", ""));
 
     }
 

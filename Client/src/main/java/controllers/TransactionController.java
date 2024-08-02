@@ -40,4 +40,11 @@ public class TransactionController {
     public List<Message> getMessages() {
         return msgCtrl.getMessages();
     }
+
+    public String postMessage(String fromId, String toId, String message) {
+        Message msg = new Message(message, fromId, toId);
+        String result = msgCtrl.postMessage(msg);
+        // return ("Message sent.");
+        return result;
+    }   
 }

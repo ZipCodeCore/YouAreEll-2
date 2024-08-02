@@ -22,7 +22,7 @@ public class IdController {
     }
 
     public ArrayList<Id> getIds() {
-        String jsonInput = sc.getIds();
+        String jsonInput = sc.sendRequest("/ids", "GET", "");;
         // convert json to array of Ids
         ObjectMapper mapper = new ObjectMapper();
         List<Id> ids;
@@ -41,10 +41,11 @@ public class IdController {
     }
 
     public Id postId(Id id) {
+
         // create json from id
         // call server, get json result Or error
         // result json to Id obj
-
+        //sc.sendRequest("/ids", "POST", body);
         return null;
     }
 

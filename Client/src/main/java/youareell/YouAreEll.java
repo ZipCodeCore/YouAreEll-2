@@ -1,10 +1,12 @@
 package youareell;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import controllers.*;
+import models.*;
 
 public class YouAreEll {
     private TransactionController tt;
@@ -33,8 +35,10 @@ public class YouAreEll {
 
     public String getMessages() {
         List<models.Message> latestMessages = tt.getMessages();
+        List<models.Message> shallowCopy = latestMessages.subList(0, latestMessages.size());
+        Collections.reverse(shallowCopy);
         StringBuilder sb = new StringBuilder();
-        for (models.Message msg : latestMessages) {
+        for (models.Message msg : shallowCopy) {
             sb.append(msg.toString()+"\n");
         }
         return sb.toString();
@@ -45,14 +49,12 @@ public class YouAreEll {
         throw new UnsupportedOperationException("Unimplemented method 'setUserId'");
     }
 
-    public String sendTo(String toUser, String string) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sendTo'");
+    public String sendTo(String currentUser, String toId, String msgbody) {
+        return tt.postMessage(currentUser, toId, msgbody);
     }
 
-    public String sendToAll(String string) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sendToAll'");
+    public String sendToAll(String currentUser, String msgbody) {
+        return tt.postMessage(currentUser, "", msgbody);
     }
 
     public String getMessagesFor(String currentUser) {
