@@ -19,6 +19,20 @@ a little article on [ModelViewController](https://www.geeksforgeeks.org/mvc-desi
 
 Kris has made this project more interesting. He's added working code for both the __ids__ command and the __messages__ command. Use the patterns of the way this is done to implement the other commands (below). You will want to start the URLShell class to see how it all works.
 
+### Changes to make it ZWEET
+
+- add a `zweets` command that will return the last 20 zweets, nicely formatted.
+- add a `zweetme` command that will return the last 20 zweets sent to you.
+- add a `zwend 'Hello World' ` command that will post a new zweet in the timeline
+- add a `zwet your_github_id` command that will set your github id and name in the system.
+- add a `zweet some_friend_githubid 'my string message'` command that will post a zweet to your friend from you on the timeline.
+- add a `zids` command that will return a formatted list of the IDs available to you.
+
+Ah, this might help
+   
+>   What are the rules for GitHub user names?
+>	Github username may only contain alphanumeric characters or hyphens. Github username cannot have multiple consecutive hyphens. Github username cannot begin or end with a hyphen. Maximum is 39 characters.
+
 ### The Point
 
 * You are to write a command interpreter using the provided `URLShell` class.

@@ -22,7 +22,7 @@ public class YouAreEll {
         ));
     }
 
-    public String get_ids() {
+    public String getIds() {
         List<models.Id> allIds = tt.getIds();
         StringBuilder sb = new StringBuilder();
         for (models.Id id : allIds) {
@@ -31,13 +31,33 @@ public class YouAreEll {
         return sb.toString();
     }
 
-    public String get_messages() {
+    public String getMessages() {
         List<models.Message> latestMessages = tt.getMessages();
         StringBuilder sb = new StringBuilder();
         for (models.Message msg : latestMessages) {
             sb.append(msg.toString()+"\n");
         }
         return sb.toString();
+    }
+
+    public String setUserId(String currentUser) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setUserId'");
+    }
+
+    public String sendTo(String toUser, String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'sendTo'");
+    }
+
+    public String sendToAll(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'sendToAll'");
+    }
+
+    public String getMessagesFor(String currentUser) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMessagesFor'");
     }
 
 

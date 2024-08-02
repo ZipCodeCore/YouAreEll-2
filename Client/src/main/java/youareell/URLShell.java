@@ -14,6 +14,9 @@ import controllers.TransactionController;
 
 // URLShell is a Console view for youareell.YouAreEll.
 public class URLShell {
+
+    String currentUser = "johnny-mnemonic";
+
     public static void prettyPrint(String output) {
         // yep, make an effort to format things nicely, eh?
         System.out.println(output);
@@ -35,7 +38,9 @@ public class URLShell {
         ProcessBuilder pb = new ProcessBuilder();
         List<String> history = new ArrayList<String>();
         int index = 0;
-        //we break out with <ctrl c>
+
+        printHELLO();
+        
         while (true) {
             //read what the user enters
             System.out.println("cmd? ");
@@ -72,19 +77,66 @@ public class URLShell {
                 // Specific Commands.
 
                 // ids
-                if (list.get(0).contains("ids")) {
-                    String results = urll.get_ids();
+                if (list.get(0).contains("ids") ||
+                list.get(0).contains("zids")) {
+                    String results = urll.getIds();
                     URLShell.prettyPrint(results);
                     continue;
                 }
 
-                // messages
-                if (list.get(0).contains("messages")) {
-                    String results = urll.get_messages();
+                // messages (last 20)
+                if (list.get(0).contains("messages") ||
+                    list.get(0).contains("zweets")) {
+                    String results = urll.getMessages();
                     URLShell.prettyPrint(results);
                     continue;
                 }
-                // you need to add a bunch more.
+                // messages for me (last 20)
+                if (list.get(0).contains("zweetme")) {
+                    String results = urll.getMessagesFor(currentUser);
+                    URLShell.prettyPrint(results);
+                    continue;
+                }
+
+                // set user id
+                if (list.get(0).contains("zwet")) {
+                    if (list.get(1) != null) {
+                        currentUser = list.get(1);
+                        System.out.println("User set to: " + currentUser);
+                    } 
+                    String results = urll.setUserId(currentUser);
+                    URLShell.prettyPrint(results);
+                    continue;
+                }
+
+                // send a message to all
+                if (list.get(0).contains("zwend")) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 1; i < list.size(); i++) {
+                        sb.append(list.get(i));
+                        sb.append(" ");
+                    }    
+                    String results = urll.sendToAll(sb.toString());
+                    URLShell.prettyPrint(results);
+                    continue;
+                }
+
+                // send a message to a friend
+                if (list.get(0).contains("zweet")) {
+                    if (list.get(1) != null) {
+                        String toUser = list.get(1);
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 1; i < list.size(); i++) {
+                            sb.append(list.get(i));
+                            sb.append(" ");
+                        }    
+                        String results = urll.sendTo(toUser, sb.toString());
+                        URLShell.prettyPrint(results);
+                        continue;
+                        continue;
+                }
+
+                //
 
                 //!! command returns the last command in history
                 if (list.get(list.size() - 1).equals("!!")) {
@@ -135,6 +187,11 @@ public class URLShell {
         }
 
 
+    }
+
+
+    private void printHELLO() {
+        System.out.println("\n***\nWelcome to ZWEET.  Enter a command or type 'exit' to quit.\n");
     }
 
 }
